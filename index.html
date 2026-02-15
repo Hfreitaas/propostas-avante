@@ -12,7 +12,7 @@
 
   <script src="assets/js/config.js"></script>
   <script src="assets/js/api.js"></script>
-  <script src="assets/js/app.js"></script>
+  <script src="assets/js/app.js" defer></script>
 </head>
 <body>
   <header class="cabecalho">
@@ -106,5 +106,36 @@
       <div class="miniHint">Se aparecer vazio, verifique se sua planilha/API estão públicas e tente recarregar a página (Ctrl+F5).</div>
     </section>
   </main>
+
+  <!-- MODAL: NOVO CLIENTE -->
+  <div id="modalCliente" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); padding:20px; z-index:9999;">
+    <div style="max-width:720px; margin:40px auto; background:#fff; border-radius:12px; padding:18px;">
+      <h2>Novo Cliente</h2>
+
+      <label>Nome</label>
+      <input id="nc_nome" type="text">
+
+      <label>CNPJ</label>
+      <input id="nc_cnpj" type="text">
+
+      <label>E-mail</label>
+      <input id="nc_email" type="email">
+
+      <label>Telefone</label>
+      <input id="nc_telefone" type="text">
+
+      <label>Endereço</label>
+      <input id="nc_endereco" type="text">
+
+      <label>ID do Vendedor (ex: 1)</label>
+      <input id="nc_vendedor_id" type="number" min="1" value="1">
+
+      <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:14px;">
+        <button type="button" class="x" onclick="fecharNovoCliente()">Cancelar</button>
+        <button type="button" onclick="salvarNovoCliente()">Salvar</button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
