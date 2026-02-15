@@ -1,0 +1,10 @@
+body{font-family:Arial,Helvetica,sans-serif;background:#f2f2f2;margin:0}
+.cabecalho{background:#003f87;color:#fff;padding:16px 18px;display:flex;justify-content:space-between;gap:12px}
+.container{width:min(1100px,92%);margin:18px auto 40px}
+.bloco{background:#fff;border:1px solid #ddd;border-radius:12px;padding:16px;margin-top:14px}
+.tabela{width:100%;border-collapse:collapse;background:#fff}
+.tabela th,.tabela td{border-bottom:1px solid #eee;padding:10px;font-size:13px}
+button{background:#003f87;color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700}
+button.gerar{background:green;width:100%;padding:14px;font-size:16px}
+button.x{background:#eee;color:#111;border:1px solid #ddd;width:34px;height:34px;padding:0}
+select,input{width:100%;padding:10px;border:1px solid #ddd;border-radius:10px;margin-top:6px;font-size:14px}
