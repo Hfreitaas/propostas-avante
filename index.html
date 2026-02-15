@@ -1,86 +1,109 @@
-:root{
-  --azul:#003f87;
-  --cinza:#f2f2f2;
-  --borda:#d9d9d9;
-}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Proposta Comercial - Avante</title>
 
-body{font-family:Arial, Helvetica, sans-serif; background:var(--cinza); margin:0;}
-.container{width:min(1100px, 92%); margin:18px auto 40px;}
+  <link rel="stylesheet" href="assets/css/style.css">
 
-.cabecalho{
-  background:var(--azul);
-  color:#fff;
-  padding:16px 18px;
-  display:flex;
-  justify-content:space-between;
-  gap:14px;
-  align-items:flex-start;
-}
-.cabecalho__left{display:flex; gap:14px; align-items:flex-start;}
-.logoFake{
-  width:96px; height:54px;
-  background:#fff; color:#111;
-  border-radius:8px;
-  display:flex; align-items:center; justify-content:center;
-  font-weight:800; letter-spacing:1px;
-}
-.cabecalho__texto{max-width:780px;}
-.cabecalho__razao{font-weight:700; font-size:14px; margin-bottom:4px;}
-.cabecalho__linha{font-size:12px; opacity:.95; margin:2px 0;}
+  <!-- jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-.cabecalho__right{min-width:220px; text-align:right;}
-.propostaNumero{font-weight:800; font-size:14px;}
-.dataEntrada{margin-top:8px; font-size:12px; opacity:.95;}
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/app.js" defer></script>
+</head>
+<body>
+  <header class="cabecalho">
+    <div class="cabecalho__left">
+      <div class="logoFake">avante</div>
+      <div class="cabecalho__texto">
+        <div class="cabecalho__razao">AVANTE SOLUÇÕES EM DETECÇÃO E ALARME DE INCÊNDIO LTDA</div>
+        <div class="cabecalho__linha">VIA ANCHIETA, Nº 1965 • 04247-002 • São Paulo - SP</div>
+        <div class="cabecalho__linha">Telefone: (11) 3384-6734 • CNPJ: 47.787.053/0001-68 • IE: 136774521111</div>
+      </div>
+    </div>
+    <div class="cabecalho__right">
+      <div class="propostaNumero">Proposta Nº <span id="propostaNumero">0001</span></div>
+      <div class="dataEntrada">Entrada: <span id="dataEntrada"></span></div>
+    </div>
+  </header>
 
-.bloco{
-  background:#fff;
-  border:1px solid var(--borda);
-  border-radius:12px;
-  padding:16px;
-  margin-top:14px;
-  box-shadow:0 4px 14px rgba(0,0,0,.05);
-}
-.bloco h2{margin:0 0 10px 0; font-size:16px;}
-label{display:block; font-size:12px; opacity:.85; margin-top:8px;}
-select, input{
-  width:100%;
-  padding:10px;
-  border:1px solid var(--borda);
-  border-radius:10px;
-  margin-top:6px;
-  font-size:14px;
-  background:#fff;
-}
-.subinfo{margin-top:10px; font-size:13px; color:#333; line-height:1.35;}
+  <main class="container">
+    <section class="bloco">
+      <h2>Para</h2>
+      <div class="grid2">
+        <div>
+          <label>Cliente</label>
+          <select id="clienteSelect"></select>
+          <div class="subinfo" id="clienteInfo"></div>
+        </div>
+        <div>
+          <label>Vendedor</label>
+          <div class="subinfo" id="vendedorInfo">—</div>
+        </div>
+      </div>
+    </section>
 
-.grid2{display:grid; grid-template-columns:1.6fr 1fr; gap:14px;}
-@media (max-width:800px){ .grid2{grid-template-columns:1fr;} .cabecalho{flex-direction:column; align-items:flex-start;} .cabecalho__right{text-align:left;} }
+    <section class="bloco">
+      <h2>Produtos</h2>
 
-.linhaBtns{display:flex; justify-content:flex-end; margin-bottom:10px;}
-button{
-  background:var(--azul);
-  color:#fff;
-  border:none;
-  padding:10px 14px;
-  border-radius:10px;
-  cursor:pointer;
-  font-weight:700;
-}
-button:hover{filter:brightness(1.05);}
-button.x{
-  background:#eee; color:#111; border:1px solid var(--borda);
-  width:34px; height:34px; padding:0; border-radius:10px;
-}
+      <div class="linhaBtns">
+        <button type="button" onclick="addProduto()">Adicionar Produto</button>
+      </div>
 
-.tabelaWrap{overflow:auto; border:1px solid var(--borda); border-radius:12px;}
-.tabela{width:100%; border-collapse:collapse; min-width:820px; background:#fff;}
-.tabela th, .tabela td{border-bottom:1px solid var(--borda); padding:10px; font-size:13px; vertical-align:top;}
-.tabela thead th{background:#f7f7f7; font-size:12px; text-transform:uppercase; letter-spacing:.4px;}
+      <div class="tabelaWrap">
+        <table class="tabela">
+          <thead>
+            <tr>
+              <th style="width:110px">NCM</th>
+              <th>Descrição do Produto</th>
+              <th style="width:70px">UN.</th>
+              <th style="width:80px">Qnt.</th>
+              <th style="width:120px">Preço Unit.</th>
+              <th style="width:120px">Preço Total</th>
+              <th style="width:40px"></th>
+            </tr>
+          </thead>
+          <tbody id="produtosTbody"></tbody>
+        </table>
+      </div>
+    </section>
 
-.resumo{display:flex; gap:14px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap;}
-.resumoBox{min-width:320px; border:1px solid var(--borda); border-radius:12px; padding:12px 14px; background:#fff;}
-.resumoLinha{display:flex; justify-content:space-between; padding:6px 0; font-size:14px;}
-.totalGeral{border-top:1px dashed var(--borda); margin-top:6px; padding-top:10px; font-size:15px;}
+    <section class="bloco">
+      <h2>Serviços</h2>
 
-button.gerar{background:green; padding:14px 18px; font-size:16px; border-radius:12px; min-width:240px;}
-.miniHint{margin-top:10px; font-size:12px; opacity:.7}
+      <div class="linhaBtns">
+        <button type="button" onclick="addServico()">Adicionar Serviço</button>
+      </div>
+
+      <div class="tabelaWrap">
+        <table class="tabela">
+          <thead>
+            <tr>
+              <th style="width:80px">Qnt.</th>
+              <th>Descrição do Serviço</th>
+              <th style="width:120px">Preço Unit.</th>
+              <th style="width:120px">Preço Total</th>
+              <th style="width:40px"></th>
+            </tr>
+          </thead>
+          <tbody id="servicosTbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="bloco resumo">
+      <div class="resumoBox">
+        <div class="resumoLinha"><span>Total Produtos:</span> <strong>R$ <span id="totalProdutos">0,00</span></strong></div>
+        <div class="resumoLinha"><span>Total Serviços:</span> <strong>R$ <span id="totalServicos">0,00</span></strong></div>
+        <div class="resumoLinha totalGeral"><span>Valor Total Global:</span> <strong>R$ <span id="totalGeral">0,00</span></strong></div>
+      </div>
+
+      <button class="gerar" type="button" onclick="gerarPDF()">Gerar PDF</button>
+      <div class="miniHint">Se aparecer vazio, verifique se sua planilha/API estão públicas e tente recarregar a página (Ctrl+F5).</div>
+    </section>
+  </main>
+</body>
+</html>
