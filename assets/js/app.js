@@ -158,3 +158,57 @@ async function gerarPDF() {
   pdf.text("Total: R$ " + (document.getElementById("totalGeral")?.textContent || "0,00"), 14, 40);
   pdf.save("proposta_avante.pdf");
 }
+function abrirNovoCliente(){
+  const modal = document.getElementById("modalCliente");
+  if (!modal) {
+    alert("Modal não encontrado. Verifique se o HTML do modal foi colado antes do </body> no index.html");
+    return;
+  }
+  modal.style.display = "block";
+}
+
+function fecharNovoCliente(){
+  const modal = document.getElementById("modalCliente");
+  if (modal) modal.style.display = "none";
+}
+
+async function salvarNovoCliente(){
+  const dados = {
+    nome: document.getElementById("nc_nome").value.trim(),
+    cnpj: document.getElementById("nc_cnpj").value.trim(),
+    email: document.getElementById("nc_email").value.trim(),
+    telefone: document.getElementById("nc_telefone").value.trim(),
+    endereco: document.getElementById("nc_endereco").value.trim(),
+    vendedor_id: Number(document.getElementById("nc_vendedor_id").value || 1)
+  };
+
+  if (!dados.nome) return alert("Informe o nome do cliente.");
+
+  try {
+    const resp = await apiPost("clientes", dados); // salva na aba 'clientes'
+
+    alert("Cliente salvo! ID: " + (resp?.id ?? "OK"));
+
+    fecharNovoCliente();
+
+    // Recarrega a lista de clientes e atualiza o select
+    clientes = await apiGet("clientes");
+
+    const sel = document.getElementById("clienteSelect");
+    sel.innerHTML = "";
+    clientes.forEach(c=>{
+      const op=document.createElement("option");
+      op.value=c.id;
+      op.textContent=c.nome;
+      sel.appendChild(op);
+    });
+
+    // Seleciona o novo cliente
+    if (resp?.id) sel.value = String(resp.id);
+
+  } catch (e) {
+    console.error(e);
+    alert("Erro ao salvar cliente: " + e.message);
+  }
+}
+
